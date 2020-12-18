@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+combined_args="$*"
+search_term=$(echo $combined_args | sed -e 's/ /+/g')
+results=$(curl -s "http://api.giphy.com/v1/gifs/search?q=$search_term&api_key=$GIPHY_API_KEY&limit=50")
+random_number=$(($RANDOM % 50))
+url=$(echo $results | jq -r .data[$random_number].images.original.url)
+curl -so ~/giphy.gif $url
+imgcat ~/giphy.gif
+
